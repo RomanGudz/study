@@ -1,9 +1,8 @@
 'use strict'
 
-const isPrime = (value) => {
-  for (let i = value; i % i; i = i) {
-    return console.log(i)
-  }
-}
+const modString = (str) => {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
 
-isPrime(2)
+console.log('modString: ', modString('привет Мир'));
+
