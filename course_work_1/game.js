@@ -71,14 +71,50 @@
         return false;
       },
       playerWon(ball) {
-        this.player += ball;
-        this.computer -= ball;
+        if (this.player + ball <= 10) {
+          this.player += ball;
+        } else {
+          this.player = 10;
+        }
+
+        if (this.computer - ball >= 0) {
+          this.computer -= ball;
+        } else {
+          this.computer = 0;
+        }
       },
+
       botWon(ball) {
-        this.computer += ball;
-        this.player -= ball;
+        if (this.computer + ball <= 10) {
+          this.computer += ball;
+        } else {
+          this.computer = 10;
+        }
+
+        if (this.player - ball >= 0) {
+          this.player -= ball;
+        } else {
+          this.player = 0;
+        }
       },
     };
+
+    const validQuantityBalls = (maxQuantity) => {
+      const result = prompt(`Загадай число шариков (от 1 до ${maxQuantity}):`);
+      const parsedResult = Number(result);
+      if (result === null) {
+        return null;
+      }
+      if (parsedResult < 1 ||
+        parsedResult > maxQuantity) {
+        alert('Пожалуйста, введите корректное числовое значение от 1 до ' +
+          maxQuantity);
+        return validQuantityBalls(maxQuantity);
+      }
+
+      return parsedResult;
+    };
+
     const firstMove = () => {
       const movePlayer = prompt(`${FIGURES_RUS.join()}`);
       const findMovePlayer = () => (movePlayer !== null ?
@@ -120,7 +156,8 @@
       if (ballPalayerAndComputer.firstMove) {
         console.log('игрок');
         if (ballPalayerAndComputer.movePlayerOrBot) {
-          const guessNumberPlayer = prompt('загадай число шариков.');
+          const guessNumberPlayer = validQuantityBalls(
+            ballPalayerAndComputer.player);
           const moveBot = isEven();
           if (guessNumberPlayer === null) {
             const questionPlayer = confirm('Точно завершить игру?');
@@ -133,8 +170,8 @@
             }
           }
 
-          if (moveBot === isEvenPlayer(Number(guessNumberPlayer))) {
-            ballPalayerAndComputer.botWon(Number(guessNumberPlayer));
+          if (moveBot === isEvenPlayer(guessNumberPlayer)) {
+            ballPalayerAndComputer.botWon(guessNumberPlayer);
 
             ballPalayerAndComputer.getResultRound('компьютер',
               moveBot, guessNumberPlayer);
@@ -145,7 +182,7 @@
             }
             ballPalayerAndComputer.getQuantityBalls();
           } else {
-            ballPalayerAndComputer.playerWon(Number(guessNumberPlayer));
+            ballPalayerAndComputer.playerWon(guessNumberPlayer);
 
             ballPalayerAndComputer.getResultRound('Игрок',
               moveBot, guessNumberPlayer);
@@ -189,7 +226,8 @@
       } else {
         console.log('bot');
         if (!ballPalayerAndComputer.movePlayerOrBot) {
-          const guessNumberPlayer = prompt('загадай число шариков.');
+          const guessNumberPlayer = validQuantityBalls(
+            ballPalayerAndComputer.player);
           const moveBot = isEven();
 
           if (guessNumberPlayer === null) {
@@ -203,8 +241,8 @@
             }
           }
 
-          if (moveBot === isEvenPlayer(Number(guessNumberPlayer))) {
-            ballPalayerAndComputer.botWon(Number(guessNumberPlayer));
+          if (moveBot === isEvenPlayer(guessNumberPlayer)) {
+            ballPalayerAndComputer.botWon(guessNumberPlayer);
 
             ballPalayerAndComputer.getResultRound('компьютер',
               moveBot, guessNumberPlayer);
@@ -216,7 +254,7 @@
 
             ballPalayerAndComputer.getQuantityBalls();
           } else {
-            ballPalayerAndComputer.playerWon(Number(guessNumberPlayer));
+            ballPalayerAndComputer.playerWon(guessNumberPlayer);
 
             ballPalayerAndComputer.getResultRound('Игрок',
               moveBot, guessNumberPlayer);
