@@ -154,6 +154,64 @@
         }
       }
     };
+    const botGuesses = (moveBot, guessNumberPlayer) => {
+      if (guessNumberPlayer === null) {
+        const questionPlayer = confirm('Точно завершить игру?');
+        if (questionPlayer) {
+          return ballPlayerAndComputer.displayGameInfo('Результат');
+        }
+      }
+      if (moveBot === isEvenPlayer(guessNumberPlayer)) {
+        ballPlayerAndComputer.botWon(guessNumberPlayer);
+
+        ballPlayerAndComputer.getResultRound(STRING_DISPLAY_INFO[0],
+          moveBot, guessNumberPlayer);
+
+        if (ballPlayerAndComputer.getPlayerLose()) {
+          ballPlayerAndComputer.getGameResult(STRING_DISPLAY_INFO[1]);
+          firstMove();
+        }
+        ballPlayerAndComputer.getQuantityBalls();
+      } else {
+        ballPlayerAndComputer.playerWon(guessNumberPlayer);
+
+        ballPlayerAndComputer.getResultRound(STRING_DISPLAY_INFO[2],
+          moveBot, guessNumberPlayer);
+
+        if (ballPlayerAndComputer.getBotLose()) {
+          ballPlayerAndComputer.getGameResult(STRING_DISPLAY_INFO[3]);
+          firstMove();
+        }
+        ballPlayerAndComputer.getQuantityBalls();
+      }
+    };
+
+    const playerGuesses = (movePlayer, guessNumberBot) => {
+      if (movePlayer === (guessNumberBot % 2 === 0)) {
+        ballPlayerAndComputer.playerWon(guessNumberBot);
+
+        ballPlayerAndComputer.getResultRound(STRING_DISPLAY_INFO[2],
+          guessNumberBot, evenOrOdd[1]);
+
+        if (ballPlayerAndComputer.getBotLose()) {
+          ballPlayerAndComputer.getGameResult(STRING_DISPLAY_INFO[3]);
+          firstMove();
+        }
+        ballPlayerAndComputer.getQuantityBalls();
+      } else {
+        ballPlayerAndComputer.botWon(guessNumberBot);
+
+        ballPlayerAndComputer.getResultRound(STRING_DISPLAY_INFO[0],
+          guessNumberBot, evenOrOdd[0]);
+
+        if (ballPlayerAndComputer.getPlayerLose()) {
+          ballPlayerAndComputer.getGameResult(STRING_DISPLAY_INFO[1]);
+          firstMove();
+        }
+        ballPlayerAndComputer.getQuantityBalls();
+      }
+    };
+
     firstMove();
     ballPlayerAndComputer.getGameStart();
     return function start() {
@@ -163,65 +221,14 @@
           const guessNumberPlayer = validQuantityBalls(
             ballPlayerAndComputer.player);
           const moveBot = isEven();
-          if (guessNumberPlayer === null) {
-            const questionPlayer = confirm('Точно завершить игру?');
-            if (questionPlayer) {
-              return ballPlayerAndComputer.displayGameInfo('Результат');
-            }
-          }
 
-          if (moveBot === isEvenPlayer(guessNumberPlayer)) {
-            ballPlayerAndComputer.botWon(guessNumberPlayer);
-
-            ballPlayerAndComputer.getResultRound(STRING_DISPLAY_INFO[0],
-              moveBot, guessNumberPlayer);
-
-            if (ballPlayerAndComputer.getPlayerLose()) {
-              ballPlayerAndComputer.getGameResult(STRING_DISPLAY_INFO[1]);
-              firstMove();
-            }
-            ballPlayerAndComputer.getQuantityBalls();
-          } else {
-            ballPlayerAndComputer.playerWon(guessNumberPlayer);
-
-            ballPlayerAndComputer.getResultRound(STRING_DISPLAY_INFO[2],
-              moveBot, guessNumberPlayer);
-
-            if (ballPlayerAndComputer.getBotLose()) {
-              ballPlayerAndComputer.getGameResult(STRING_DISPLAY_INFO[3]);
-              firstMove();
-            }
-            ballPlayerAndComputer.getQuantityBalls();
-          }
+          botGuesses(moveBot, guessNumberPlayer);
         } else {
           const guessNumberBot = getRandomIntInclusive(1,
             ballPlayerAndComputer.computer);
 
           const movePlayer = confirm('Число чётное?');
-
-          if (movePlayer === (guessNumberBot % 2 === 0)) {
-            ballPlayerAndComputer.playerWon(guessNumberBot);
-
-            ballPlayerAndComputer.getResultRound(STRING_DISPLAY_INFO[2],
-              guessNumberBot, evenOrOdd[1]);
-
-            if (ballPlayerAndComputer.getBotLose()) {
-              ballPlayerAndComputer.getGameResult(STRING_DISPLAY_INFO[3]);
-              firstMove();
-            }
-            ballPlayerAndComputer.getQuantityBalls();
-          } else {
-            ballPlayerAndComputer.botWon(guessNumberBot);
-
-            ballPlayerAndComputer.getResultRound(STRING_DISPLAY_INFO[0],
-              guessNumberBot, evenOrOdd[0]);
-
-            if (ballPlayerAndComputer.getPlayerLose()) {
-              ballPlayerAndComputer.getGameResult(STRING_DISPLAY_INFO[1]);
-              firstMove();
-            }
-            ballPlayerAndComputer.getQuantityBalls();
-          }
+          playerGuesses(movePlayer, guessNumberBot);
         }
       } else {
         console.log('bot');
@@ -229,39 +236,7 @@
           const guessNumberPlayer = validQuantityBalls(
             ballPlayerAndComputer.player);
           const moveBot = isEven();
-
-          if (guessNumberPlayer === null) {
-            const questionPlayer = confirm('Точно завершить игру?');
-            if (questionPlayer) {
-              return ballPlayerAndComputer.displayGameInfo('Результат');
-            }
-          }
-
-          if (moveBot === isEvenPlayer(guessNumberPlayer)) {
-            ballPlayerAndComputer.botWon(guessNumberPlayer);
-
-            ballPlayerAndComputer.getResultRound(STRING_DISPLAY_INFO[0],
-              moveBot, guessNumberPlayer);
-
-            if (ballPlayerAndComputer.getPlayerLose()) {
-              ballPlayerAndComputer.getGameResult(STRING_DISPLAY_INFO[1]);
-              firstMove();
-            }
-
-            ballPlayerAndComputer.getQuantityBalls();
-          } else {
-            ballPlayerAndComputer.playerWon(guessNumberPlayer);
-
-            ballPlayerAndComputer.getResultRound(STRING_DISPLAY_INFO[2],
-              moveBot, guessNumberPlayer);
-
-            if (ballPlayerAndComputer.getBotLose()) {
-              ballPlayerAndComputer.getGameResult(STRING_DISPLAY_INFO[3]);
-              firstMove();
-            }
-
-            ballPlayerAndComputer.getQuantityBalls();
-          }
+          botGuesses(moveBot, guessNumberPlayer);
         } else {
           const guessNumberBot = getRandomIntInclusive(1,
             ballPlayerAndComputer.computer);
@@ -269,30 +244,7 @@
           const movePlayer = confirm('Число чётное?');
 
           ballPlayerAndComputer.getQuantityBalls();
-
-          if (movePlayer === (guessNumberBot % 2 === 0)) {
-            ballPlayerAndComputer.playerWon(guessNumberBot);
-
-            ballPlayerAndComputer.getResultRound(STRING_DISPLAY_INFO[2],
-              guessNumberBot, evenOrOdd[1]);
-
-            if (ballPlayerAndComputer.getBotLose()) {
-              ballPlayerAndComputer.getGameResult(STRING_DISPLAY_INFO[3]);
-              firstMove();
-            }
-
-            ballPlayerAndComputer.getQuantityBalls();
-          } else {
-            ballPlayerAndComputer.botWon(guessNumberBot);
-
-            ballPlayerAndComputer.getResultRound(STRING_DISPLAY_INFO[0],
-              guessNumberBot, evenOrOdd[0]);
-            if (ballPlayerAndComputer.getPlayerLose()) {
-              ballPlayerAndComputer.getGameResult(STRING_DISPLAY_INFO[1]);
-              firstMove();
-            }
-            ballPlayerAndComputer.getQuantityBalls();
-          }
+          playerGuesses(movePlayer, guessNumberBot);
         }
       }
       ballPlayerAndComputer.movePlayerOrBot =
